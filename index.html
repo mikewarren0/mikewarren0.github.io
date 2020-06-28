@@ -1,0 +1,129 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      h2,
+      h3 {
+        margin: 10px;
+        font-size: 1.2em;
+      }
+      h3 {
+        font-size: 1em;
+      }
+      p {
+        font-size: 0.85em;
+        margin: 10px;
+        text-align: left;
+      }
+      .map-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.8);
+        margin-right: 20px;
+        font-family: Arial, sans-serif;
+        overflow: auto;
+        border-radius: 3px;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+      #features {
+        top: 0;
+        height: 150px;
+        margin-top: 20px;
+        width: 250px;
+      }
+      #legend {
+        padding: 10px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        line-height: 18px;
+        height: 150px;
+        margin-bottom: 40px;
+        width: 100px;
+      }
+      .legend-key {
+        display: inline-block;
+        border-radius: 20%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div class="map-overlay" id="features">
+      <h2>COVID risk 2020-06-28</h2>
+      <div id="pd"><p>Hover for info</p></div>
+    </div>
+    <div class="map-overlay" id="legend"></div>
+
+    <script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoibXN3YXJyZW4iLCJhIjoiY2tid2g1ZGZtMGZzajJ1cDN1amo0ajFtbCJ9.lZ2XyKwA63kGy953Xpbjcg';
+
+      var map = new mapboxgl.Map({
+	  container: 'map', // container id
+	  style: 'mapbox://styles/mswarren/ckbzl0sim112f1isul62u8040' // replace this with your style URL
+      });
+
+     // wait for map to load before adjusting it
+      map.on('load', function() {
+        // make a pointer cursor
+        map.getCanvas().style.cursor = 'default';
+
+        // set map bounds to the continental US
+        map.fitBounds([
+          [-133.2421875, 16.972741],
+          [-47.63671875, 52.696361]
+        ]);
+
+        // make a pointer cursor
+        map.getCanvas().style.cursor = 'default';
+
+        // change info window on hover
+        map.on('mousemove', function(e) {
+          var counties = map.queryRenderedFeatures(e.point, {
+            layers: ['counties-3f6p8c']
+          });
+
+          if (counties.length > 0) {
+              document.getElementById('pd').innerHTML =
+		  '<h3><strong>' +
+		  counties[0].properties.name +
+		  '</strong></h3><p><em>' +
+		  counties[0].properties.cases +
+		  ' Recent cases</em></p>' +
+		  '<p><em>' +
+		  counties[0].properties.positive_pct +
+		  ' Percent positive</em></p>' +
+		  '<p><strong><em>' +
+		  counties[0].properties.est_cases_per_1k +
+		  '</strong> Estimated cases per thousand</em></p>';
+          } else {
+            document.getElementById('pd').innerHTML =
+              '<p>Hover for info</p>';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
