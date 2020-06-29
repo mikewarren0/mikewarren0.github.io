@@ -82,7 +82,7 @@
 
       var map = new mapboxgl.Map({
 	  container: 'map', // container id
-	  style: 'mapbox://styles/mswarren/ckbzl0sim112f1isul62u8040' // replace this with your style URL
+	  style: 'mapbox://styles/mswarren/ckbzl0sim112f1isul62u8040'
       });
 
      // wait for map to load before adjusting it
@@ -120,7 +120,7 @@
         // change info window on hover
         map.on('mousemove', function(e) {
           var counties = map.queryRenderedFeatures(e.point, {
-            layers: ['counties-3f6p8c']
+            layers: ['counties-aqch82']
           });
 
           if (counties.length > 0) {
