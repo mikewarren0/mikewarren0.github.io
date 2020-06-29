@@ -120,7 +120,7 @@
         // change info window on hover
         map.on('mousemove', function(e) {
           var counties = map.queryRenderedFeatures(e.point, {
-            layers: ['counties-aqch82']
+            layers: ['counties']
           });
 
           if (counties.length > 0) {
