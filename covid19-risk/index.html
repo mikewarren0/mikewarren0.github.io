@@ -48,7 +48,7 @@
       }
       #features {
         top: 0;
-        height: 150px;
+        height: 160px;
         margin-top: 20px;
         width: 250px;
       }
@@ -72,7 +72,7 @@
   <body>
     <div id="map"></div>
     <div class="map-overlay" id="features">
-      <h2>COVID risk 2020-06-28</h2>
+      <h2>COVID-19 now</h2>
       <div id="pd"><p>Hover for info</p></div>
     </div>
     <div class="map-overlay" id="legend"></div>
@@ -127,18 +127,19 @@
               document.getElementById('pd').innerHTML =
 		  '<h3><strong>' +
 		  counties[0].properties.name +
-		  '</strong></h3><p><em>' +
-		  counties[0].properties.cases +
+		  '</strong></h3>' +
+		  '<p><strong><em>' +
+		  counties[0].properties.est_cases_per_1k +
+		  '</strong> Est. infections per thousand</em></p>' +
+		  '<p><em>' +
+	          counties[0].properties.cases +
 		  ' Recent cases</em></p>' +
 		  '<p><em>' +
 		  counties[0].properties.positive_pct +
-		  ' Percent positive</em></p>' +
-		  '<p><strong><em>' +
-		  counties[0].properties.est_cases_per_1k +
-		  '</strong> Estimated cases per thousand</em></p>';
+		  ' Percent positive</em></p>';
           } else {
             document.getElementById('pd').innerHTML =
-              '<p>Hover for info</p>';
+              '<p>Estimated actual infectious cases per capita are calculated from confirmed cases reported in the past 14 days (<link href="https://github.com/nytimes/covid-19-data">NYT</link>) and test positivity (<link href="https://covidtracking.com/api/v1/states/daily.csv">the COVID Tracking Project</link>).</p><p>actual = 20 * (confirmed 14-day cases) * sqrt(14-day positive fraction).</p>';
           }
         });
       });
