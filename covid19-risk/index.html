@@ -142,7 +142,7 @@
 		  '</p>';
           } else {
             document.getElementById('pd').innerHTML =
-              '<p>Estimated actual infectious cases per capita are calculated from confirmed cases reported in the past 14 days (<link href="https://github.com/nytimes/covid-19-data">NYT</link>) and test positivity (<link href="https://covidtracking.com/api/v1/states/daily.csv">the COVID Tracking Project</link>).</p><p>actual = 20 * (confirmed 14-day cases) * sqrt(14-day positive fraction).</p>';
+              '<p>Estimated actual infectious cases per capita are calculated from confirmed cases reported in the past 7 days (<link href="https://github.com/nytimes/covid-19-data">NYT</link>) and test positivity (<link href="https://covidtracking.com/api/v1/states/daily.csv">the COVID Tracking Project</link>).</p><p>actual = 28 * (confirmed 7-day cases) * sqrt(7-day positive fraction).</p>';
           }
         });
       });
