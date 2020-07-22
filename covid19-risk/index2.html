@@ -1,0 +1,121 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="https://www.descarteslabs.com/favicon.ico"/>
+    <link rel="icon" sizes="16x16 32x32" href="https://www.descarteslabs.com/favicon.ico">
+
+    <style>
+      #map {top:0; bottom:0; width:100%; max-width: 1280px; height: 650px;}
+      .legend-overlay {
+	width: 284px;
+        padding: 4px;
+	line-height: 24px;
+        font-family: 'Source Sans Pro', sans-serif;
+      }
+      .mapboxgl-popup-content {
+	  width: 220px;
+	  padding: 10px;
+	  font-family: 'Source Sans Pro', sans-serif;
+	  font-size:14px;
+      }
+    </style>
+  </head>
+<body>
+  <style>
+    .legend label,
+    .legend span {
+	display:block;
+	float:left;
+	height:15px;
+	width:20%;
+	text-align:center;
+	font-size:14px;
+	color:#808080;
+    }
+  </style>
+  
+  <div id="map"></div>
+  <div class="legend-overlay" id='legend'>
+    <strong>Estimated infectious cases per thousand</strong>
+    <nav class='legend clearfix'>
+      <span style='background:#a0ff70;'></span>
+      <span style='background:#5becd6;'></span>
+      <span style='background:#d7de02;'></span>
+      <span style='background:#ff0f1f;'></span>
+      <span style='background:#bb0fff;'></span>
+      <label>0-1</label>
+      <label>1-3</label>
+      <label>3-10</label>
+      <label>10-30</label>
+      <label>30+</label>
+  </div>
+
+  <script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoibXN3YXJyZW4iLCJhIjoiY2tid2g1ZGZtMGZzajJ1cDN1amo0ajFtbCJ9.lZ2XyKwA63kGy953Xpbjcg';
+
+
+      var map = new mapboxgl.Map({
+	  container: 'map', // container id
+	  style: 'mapbox://styles/mswarren/ckbzl0sim112f1isul62u8040',
+	  center: [-96, 38.25],
+          zoom: 3.85
+      });
+    
+      // map.addControl(new mapboxgl.FullscreenControl());
+
+      // Create a popup, but don't add it to the map yet.
+    var popup = new mapboxgl.Popup({
+	offset: [0,-5],
+	closeButton: false,
+	closeOnClick: false
+      });
+
+      map.on('load', function() {
+          // make a pointer cursor
+          map.getCanvas().style.cursor = 'default';
+      });
+
+      map.on('mousemove', function(e) {
+          var counties = map.queryRenderedFeatures(e.point, {
+              layers: ['counties']
+          });
+
+          if (counties.length > 0) {
+	      html = '<strong>' +
+		  counties[0].properties.name +
+		  '</strong>' +
+		  '<br /><strong><em>' +
+		  counties[0].properties.est_cases_per_1k +
+		  '</strong> Est. infectious per thousand</em>' +
+		  '<br /><em>' +
+	          counties[0].properties.cases +
+		  ' cases in past 7 days (county)</em>' +
+		  '<br /><em>' +
+		  counties[0].properties.positive_pct +
+		  '% positive tests (state)</em>' + 
+		  '<br />' +
+		  counties[0].properties.date;
+
+	      popup
+		  .setLngLat(e.lngLat)
+		  .setHTML(html)
+		  .addTo(map);
+	  } else {
+	      popup.remove();
+	  }
+      });
+
+    </script>
+  </body>
+</html>
